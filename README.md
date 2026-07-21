@@ -36,13 +36,19 @@
 
 ## Quick Install
 
-### One-liner (bash)
+### Universal (npx skills — supports 70+ agents)
+
+```bash
+npx skills add vtino17/deep-mind-skill
+```
+
+### Manual install (any agent)
 
 ```bash
 git clone https://github.com/vtino17/deep-mind-skill.git ~/.agents/skills/deep-mind
 ```
 
-### One-liner (PowerShell)
+### PowerShell
 
 ```powershell
 git clone https://github.com/vtino17/deep-mind-skill.git "$env:USERPROFILE\.agents\skills\deep-mind"
