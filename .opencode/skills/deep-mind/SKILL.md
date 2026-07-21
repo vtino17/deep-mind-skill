@@ -2,7 +2,9 @@
 name: deep-mind
 description: Force critical thinking, deep reasoning, and intellectual integrity. Activates when agent needs to analyze deeply, verify claims, or research unknown territory.
 trigger: >
-  Phrases like "think deeper", "critical analysis", "reason about", "first principles",
+  Commands like "/think-deeper", "/critical", "/deep-dive", "/verify", "/research",
+  "/first-principles", "/root-cause", "/reason", "/analisa",
+  and natural phrases like "think deeper", "critical analysis", "reason about", "first principles",
   "deep dive", "analisa mendalam", "pikir kritis", "root cause", "verify", "research this",
   "cari tahu", "deep reasoning", "apakah benar", "prove it", "tracing through",
   "break this down", "investigate"
