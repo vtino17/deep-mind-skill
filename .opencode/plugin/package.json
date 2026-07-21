@@ -1,0 +1,8 @@
+{
+  "name": "deep-mind-opencode-plugin",
+  "version": "0.1.0",
+  "description": "deep-mind plugin for opencode — critical thinking slash commands",
+  "type": "module",
+  "main": "plugin.js",
+  "private": true
+}
