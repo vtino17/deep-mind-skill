@@ -8,7 +8,7 @@ trigger: >
   "break this down", "investigate"
 models: ["claude-sonnet-4-20250514", "claude-sonnet-4.5-20250514", "claude-opus-4-20250514", "gemini-2.5-pro", "gpt-4o"]
 config:
-  auto-activate: false
+  auto-activate: true
   priority: high
   tone: direct, analytical, honest, humble
   locale: id-ID, en-US
