@@ -1,8 +1,8 @@
-<#
-╔══════════════════════════════════════════════════════════════╗
-║  deep-mind 🧠 — Critical Thinking Engine for AI Agents     ║
-║  Interactive Installer (Windows / PowerShell)                ║
-╚══════════════════════════════════════════════════════════════╝
+﻿<#
+â•”â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•—
+â•‘  deep-mind - Critical Thinking Engine for AI Agents         â•‘
+â•‘  Interactive Installer (Windows / PowerShell)                â•‘
+â•šâ•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 #>
 
 $ErrorActionPreference = "Stop"
@@ -11,10 +11,10 @@ $SkillSrc = Join-Path $ScriptDir ".claude\skills\deep-mind"
 
 function Write-Banner {
     Clear-Host
-    Write-Host "╔═══════════════════════════════════════════╗" -ForegroundColor Cyan
-    Write-Host "║       🧠 deep-mind — Installer            ║" -ForegroundColor Cyan
-    Write-Host "║  Critical Thinking Engine for AI Agents   ║" -ForegroundColor Cyan
-    Write-Host "╚═══════════════════════════════════════════╝" -ForegroundColor Cyan
+    Write-Host "================================================" -ForegroundColor Cyan
+    Write-Host "  deep-mind - Installer" -ForegroundColor Cyan
+    Write-Host "  Critical Thinking Engine for AI Agents" -ForegroundColor Cyan
+    Write-Host "================================================" -ForegroundColor Cyan
     Write-Host ""
 }
 
@@ -24,58 +24,47 @@ function Get-UserHome {
 
 function Get-Agents {
     $agents = @()
-    $home = Get-UserHome
+    $userHome = Get-UserHome
 
-    # Claude Code
-    if (Test-Path "$home\.claude") {
-        $agents += [PSCustomObject]@{ Key="claude"; Name="Claude Code"; Path="$home\.claude\skills"; Detected=$true }
+    if (Test-Path "$userHome\.claude") {
+        $agents += [PSCustomObject]@{ Key="claude"; Name="Claude Code"; Path="$userHome\.claude\skills"; Detected=$true }
     }
 
-    # Cursor
-    $cursorPath = if (Test-Path "$home\.cursor") { "$home\.cursor" } elseif (Test-Path "$home\.config\cursor") { "$home\.config\cursor" } else { $null }
+    $cursorPath = if (Test-Path "$userHome\.cursor") { "$userHome\.cursor" } elseif (Test-Path "$userHome\.config\cursor") { "$userHome\.config\cursor" } else { $null }
     if ($cursorPath) { $agents += [PSCustomObject]@{ Key="cursor"; Name="Cursor"; Path="$cursorPath\skills"; Detected=$true } }
 
-    # Windsurf
-    $wsPath = if (Test-Path "$home\.windsurf") { "$home\.windsurf" } elseif (Test-Path "$home\.config\windsurf") { "$home\.config\windsurf" } else { $null }
+    $wsPath = if (Test-Path "$userHome\.windsurf") { "$userHome\.windsurf" } elseif (Test-Path "$userHome\.config\windsurf") { "$userHome\.config\windsurf" } else { $null }
     if ($wsPath) { $agents += [PSCustomObject]@{ Key="windsurf"; Name="Windsurf"; Path="$wsPath\skills"; Detected=$true } }
 
-    # GitHub Copilot
     if (Get-Command gh -ErrorAction SilentlyContinue) {
-        $copilotPath = "$home\.copilot\skills"
+        $copilotPath = "$userHome\.copilot\skills"
         if (-not (Test-Path $copilotPath)) { New-Item -ItemType Directory -Path $copilotPath -Force | Out-Null }
         $agents += [PSCustomObject]@{ Key="copilot"; Name="GitHub Copilot CLI"; Path=$copilotPath; Detected=$true }
     }
 
-    # Codex CLI
-    if ((Test-Path "$home\.codex") -or (Get-Command codex -ErrorAction SilentlyContinue)) {
-        $agents += [PSCustomObject]@{ Key="codex"; Name="Codex CLI"; Path="$home\.codex\skills"; Detected=$true }
+    if ((Test-Path "$userHome\.codex") -or (Get-Command codex -ErrorAction SilentlyContinue)) {
+        $agents += [PSCustomObject]@{ Key="codex"; Name="Codex CLI"; Path="$userHome\.codex\skills"; Detected=$true }
     }
 
-    # Cline
-    if ((Test-Path "$home\.config\Code\globalStorage\saoudrizwan.claude-dev")) {
-        $agents += [PSCustomObject]@{ Key="cline"; Name="Cline"; Path="$home\.config\cline\skills"; Detected=$true }
+    if ((Test-Path "$userHome\.config\Code\globalStorage\saoudrizwan.claude-dev")) {
+        $agents += [PSCustomObject]@{ Key="cline"; Name="Cline"; Path="$userHome\.config\cline\skills"; Detected=$true }
     }
 
-    # Aider
     if (Get-Command aider -ErrorAction SilentlyContinue) {
-        $agents += [PSCustomObject]@{ Key="aider"; Name="Aider"; Path="$home\.aider\skills"; Detected=$true }
+        $agents += [PSCustomObject]@{ Key="aider"; Name="Aider"; Path="$userHome\.aider\skills"; Detected=$true }
     }
 
-    # Continue
-    $contPath = if (Test-Path "$home\.continue") { "$home\.continue" } elseif (Test-Path "$home\.config\continue") { "$home\.config\continue" } else { $null }
+    $contPath = if (Test-Path "$userHome\.continue") { "$userHome\.continue" } elseif (Test-Path "$userHome\.config\continue") { "$userHome\.config\continue" } else { $null }
     if ($contPath) { $agents += [PSCustomObject]@{ Key="continue"; Name="Continue"; Path="$contPath\skills"; Detected=$true } }
 
-    # Roo Code
-    $rooPath = if (Test-Path "$home\.roocode") { "$home\.roocode" } elseif (Test-Path "$home\.config\roocode") { "$home\.config\roocode" } else { $null }
+    $rooPath = if (Test-Path "$userHome\.roocode") { "$userHome\.roocode" } elseif (Test-Path "$userHome\.config\roocode") { "$userHome\.config\roocode" } else { $null }
     if ($rooPath) { $agents += [PSCustomObject]@{ Key="roocode"; Name="Roo Code"; Path="$rooPath\skills"; Detected=$true } }
 
-    # Augment
-    if ((Test-Path "$home\.augment") -or (Get-Command augment -ErrorAction SilentlyContinue)) {
-        $agents += [PSCustomObject]@{ Key="augment"; Name="Augment"; Path="$home\.augment\skills"; Detected=$true }
+    if ((Test-Path "$userHome\.augment") -or (Get-Command augment -ErrorAction SilentlyContinue)) {
+        $agents += [PSCustomObject]@{ Key="augment"; Name="Augment"; Path="$userHome\.augment\skills"; Detected=$true }
     }
 
-    # OpenCode
-    $ocPath = if (Test-Path "$home\.config\opencode") { "$home\.config\opencode" } elseif (Test-Path "$home\.opencode") { "$home\.opencode" } else { $null }
+    $ocPath = if (Test-Path "$userHome\.config\opencode") { "$userHome\.config\opencode" } elseif (Test-Path "$userHome\.opencode") { "$userHome\.opencode" } else { $null }
     if ($ocPath) { $agents += [PSCustomObject]@{ Key="opencode"; Name="OpenCode"; Path="$ocPath\skills"; Detected=$true } }
 
     return $agents
@@ -86,16 +75,14 @@ function Install-Skill {
     $targetPath = $Agent.Path
     $skillPath = Join-Path $targetPath "deep-mind"
     
-    # Create directories
     New-Item -ItemType Directory -Path "$skillPath\references" -Force | Out-Null
     
-    # Copy files
     Copy-Item -Path "$SkillSrc\SKILL.md" -Destination "$skillPath\" -Force
     if (Test-Path "$SkillSrc\references") {
         Copy-Item -Path "$SkillSrc\references\*" -Destination "$skillPath\references\" -Force -Recurse
     }
     
-    Write-Host "  ✅ $($Agent.Name) → $skillPath" -ForegroundColor Green
+    Write-Host "  [OK] $($Agent.Name) -> $skillPath" -ForegroundColor Green
 }
 
 function Uninstall-Skill {
@@ -103,63 +90,59 @@ function Uninstall-Skill {
     $skillPath = Join-Path $Agent.Path "deep-mind"
     if (Test-Path $skillPath) {
         Remove-Item -Path $skillPath -Recurse -Force
-        Write-Host "  🗑️  Removed from $($Agent.Name)" -ForegroundColor Green
+        Write-Host "  [Removed] $($Agent.Name)" -ForegroundColor Green
     }
 }
 
-# ══════════════════════ MAIN ══════════════════════
+# ====== MAIN ======
 
 Write-Banner
 
 $agents = Get-Agents
 
 if ($args[0] -eq "--uninstall") {
-    Write-Host "🗑️  Uninstalling deep-mind from all agents..." -ForegroundColor Yellow
+    Write-Host "Uninstalling deep-mind from all agents..." -ForegroundColor Yellow
     foreach ($agent in $agents) { Uninstall-Skill $agent }
-    Write-Host "✔️  Uninstall selesai!" -ForegroundColor Green
+    Write-Host "Done!" -ForegroundColor Green
     exit 0
 }
 
 if ($args[0] -eq "--dry-run") {
-    Write-Host "🔍 Preview: Akan install skill ke agent berikut:" -ForegroundColor Yellow
-    foreach ($agent in $agents) { Write-Host "  • $($agent.Name) ($($agent.Path))" }
+    Write-Host "Preview: Will install skill to:" -ForegroundColor Yellow
+    foreach ($agent in $agents) { Write-Host "  - $($agent.Name) ($($agent.Path))" }
     exit 0
 }
 
 if ($agents.Count -eq 0) {
-    Write-Host "❌  Tidak ada AI coding agent terdeteksi di sistem ini." -ForegroundColor Red
-    Write-Host ""
-    Write-Host "Pastikan minimal satu agent terinstall:"
-    Write-Host "  Claude Code, Cursor, Windsurf, Copilot CLI, Codex, dll."
+    Write-Host "[ERROR] No AI coding agents detected." -ForegroundColor Red
+    Write-Host "Make sure at least one agent is installed: Claude Code, Cursor, Windsurf, etc."
     exit 1
 }
 
-Write-Host "🔍 Agent terdeteksi:" -ForegroundColor Green
-foreach ($agent in $agents) { Write-Host "  ✅ $($agent.Name)" }
+Write-Host "Detected agents:" -ForegroundColor Green
+foreach ($agent in $agents) { Write-Host "  [OK] $($agent.Name)" }
 Write-Host ""
 
 if ($agents.Count -eq 1) {
-    Write-Host "→ Hanya 1 agent terdeteksi. Install otomatis." -ForegroundColor Cyan
+    Write-Host "Only 1 agent detected. Auto-installing." -ForegroundColor Cyan
     $selected = $agents
 } else {
-    # Build selection menu with Out-GridView if available, otherwise console selection
     if (Get-Command Out-GridView -ErrorAction SilentlyContinue) {
-        Write-Host "📋  Memilih agent (gunakan checklist dialog)..." -ForegroundColor Yellow
-        $selectedNames = $agents | Out-GridView -Title "Pilih AI Agent untuk deep-mind" -OutputMode Multiple
+        Write-Host "Select agents using checklist dialog..." -ForegroundColor Yellow
+        $selectedNames = $agents | Out-GridView -Title "Select AI agents for deep-mind" -OutputMode Multiple
         if ($selectedNames.Count -eq 0) {
-            Write-Host "❌  Tidak ada agent dipilih. Keluar." -ForegroundColor Red
+            Write-Host "No agent selected. Exiting." -ForegroundColor Red
             exit 1
         }
         $selected = $agents | Where-Object { $_.Name -in $selectedNames.Name }
     } else {
-        # Fallback: console selection
-        Write-Host "Pilih AI Agent untuk dipasang skill ini:" -ForegroundColor Yellow
+        Write-Host "Select AI agents to install:" -ForegroundColor Yellow
         Write-Host ""
         for ($i = 0; $i -lt $agents.Count; $i++) {
             Write-Host "  [$($i+1)] $($agents[$i].Name)"
         }
         Write-Host ""
-        $input = Read-Host "Masukkan nomor (pisah koma/spasi, atau 'all')"
+        $input = Read-Host "Enter numbers (comma/space separated, or 'all')"
         
         if ($input -eq "all") {
             $selected = $agents
@@ -170,9 +153,8 @@ if ($agents.Count -eq 1) {
     }
 }
 
-# Install
 Write-Host ""
-Write-Host "📦  Menginstall deep-mind skill..." -ForegroundColor Yellow
+Write-Host "Installing deep-mind skill..." -ForegroundColor Yellow
 $count = 0
 foreach ($agent in $selected) {
     Install-Skill $agent
@@ -180,9 +162,9 @@ foreach ($agent in $selected) {
 }
 
 Write-Host ""
-Write-Host "✔️  Selesai! deep-mind terinstall di $count agent(s)." -ForegroundColor Green
+Write-Host "Done! deep-mind installed on $count agent(s)." -ForegroundColor Green
 Write-Host ""
-Write-Host "📖  Cara pakai: cukup mulai prompt dengan trigger phrase seperti:" -ForegroundColor Cyan
-Write-Host '    "think deeper: ...", "critical analysis: ...", "first principles: ..."'
+Write-Host "Usage:" -ForegroundColor Cyan
+Write-Host '  Start prompts with: "think deeper: ...", "critical analysis: ...", "first principles: ..."'
 Write-Host ""
-Write-Host "🗑️  Uninstall: powershell -File install.ps1 --uninstall" -ForegroundColor Gray
+Write-Host "Uninstall: powershell -File install.ps1 --uninstall" -ForegroundColor Gray
