@@ -1,4 +1,4 @@
-# deep-mind 🧠 — Critical Thinking Engine for AI Coding Agents
+# deep-mind   Critical Thinking Engine for AI Coding Agents
 
 <p align="center">
   <img src="https://img.shields.io/github/stars/vtino17/deep-mind-skill?style=flat-square&label=Stars&color=ffd700" alt="Stars">
@@ -17,24 +17,24 @@
 
 ---
 
-## ✨ Features
+##  Features
 
 | Feature | Description |
 |---|---|
-| 🧠 **5-Stage Reasoning** | Verify → Ground → Reason → Challenge → Decide |
-| 🚫 **Anti-Hallucination** | Blocks fabricated code, fake APIs, and imaginary libraries |
-| 🔍 **Evidence Gate** | Every claim must cite real files, docs, or runtime output |
-| 🙅 **Anti-Sycophancy** | Rejects user flattery and leading suggestions — tells the truth |
-| 🏛️ **Integrity Core** | Refuses to cut corners, skip tests, or silence warnings |
-| 📦 **Zero Dependencies** | Pure markdown skill — nothing to `pip install` or `npm i` |
-| 🌐 **Agent-Agnostic** | Works with Claude Code, Codex, Cursor, Windsurf, Aider, and more |
-| ⚡ **Caveman Mode** | Ultra-compressed output — 65% less token waste |
-| 🔄 **Self-Audit** | After each task, reviews own output for correctness |
-| 🌏 **Bilingual** | English primary, with Indonesian support for lokal |
+|  **5-Stage Reasoning** | Verify  Ground  Reason  Challenge  Decide |
+|  **Anti-Hallucination** | Blocks fabricated code, fake APIs, and imaginary libraries |
+|  **Evidence Gate** | Every claim must cite real files, docs, or runtime output |
+|  **Anti-Sycophancy** | Rejects user flattery and leading suggestions  tells the truth |
+|  **Integrity Core** | Refuses to cut corners, skip tests, or silence warnings |
+|  **Zero Dependencies** | Pure markdown skill  nothing to `pip install` or `npm i` |
+|  **Agent-Agnostic** | Works with Claude Code, Codex, Cursor, Windsurf, Aider, and more |
+|  **Caveman Mode** | Ultra-compressed output  65% less token waste |
+|  **Self-Audit** | After each task, reviews own output for correctness |
+|  **Bilingual** | English primary, with Indonesian support for lokal |
 
 ---
 
-## 🚀 Quick Install
+##  Quick Install
 
 ### One-liner (bash)
 
@@ -50,7 +50,7 @@ git clone https://github.com/vtino17/deep-mind-skill.git "$env:USERPROFILE\.agen
 
 ---
 
-## 🛠️ Interactive Installer
+##  Interactive Installer
 
 ### Bash
 
@@ -66,7 +66,7 @@ iwr -useb https://raw.githubusercontent.com/vtino17/deep-mind-skill/main/install
 
 ---
 
-## 📋 Manual Install
+##  Manual Install
 
 1. Clone the repo into your agent skills directory:
 
@@ -86,7 +86,7 @@ iwr -useb https://raw.githubusercontent.com/vtino17/deep-mind-skill/main/install
 
 3. Activate the skill in your agent config. Refer to your agent's docs for the exact config key.
 
-   Example for Claude Code — add to `~/.claude/settings.json`:
+   Example for Claude Code  add to `~/.claude/settings.json`:
 
    ```json
    {
@@ -98,7 +98,7 @@ iwr -useb https://raw.githubusercontent.com/vtino17/deep-mind-skill/main/install
 
 ---
 
-## ❌ Uninstall
+##  Uninstall
 
 ### Bash
 
@@ -116,79 +116,79 @@ Then remove the `deep-mind` entry from your agent's skill configuration file.
 
 ---
 
-## 🧩 How It Works — 5-Stage Reasoning Pipeline
+##  How It Works  5-Stage Reasoning Pipeline
 
 Every time your agent receives a task, deep-mind intercepts and runs it through five stages:
 
 ```
- ┌─────────────┐
- │  1. VERIFY  │  Check the request against known facts.
- │             │  "Does this package exist? Is this API real?"
- └──────┬──────┘
-        ↓
- ┌─────────────┐
- │  2. GROUND  │  Anchor every claim to concrete sources.
- │             │  "Cite the file, the docs, or the runtime."
- └──────┬──────┘
-        ↓
- ┌─────────────┐
- │  3. REASON  │  Step-by-step logical deduction.
- │             │  No leaps. No assumptions.
- └──────┬──────┘
-        ↓
- ┌─────────────┐
- │  4. CHALLENGE│  Stress-test the conclusion.
- │             │  "What if this is wrong? What's the counter-evidence?"
- └──────┬──────┘
-        ↓
- ┌─────────────┐
- │  5. DECIDE  │  Output only what survives all gates.
- │             │  If doubt remains → say "I don't know."
- └─────────────┘
+ 
+   1. VERIFY    Check the request against known facts.
+                "Does this package exist? Is this API real?"
+ 
+        
+ 
+   2. GROUND    Anchor every claim to concrete sources.
+                "Cite the file, the docs, or the runtime."
+ 
+        
+ 
+   3. REASON    Step-by-step logical deduction.
+                No leaps. No assumptions.
+ 
+        
+ 
+   4. CHALLENGE  Stress-test the conclusion.
+                "What if this is wrong? What's the counter-evidence?"
+ 
+        
+ 
+   5. DECIDE    Output only what survives all gates.
+                If doubt remains  say "I don't know."
+ 
 ```
 
 If any stage fails, the agent reports the gap instead of guessing.
 
 ---
 
-## 🤖 Supported AI Agents
+##  Supported AI Agents
 
 deep-mind works with any agent that supports skill/instruction injection. Tested on:
 
 | Agent | Status |
 |---|---|
-| **Claude Code** (Anthropic) | ✅ Full support |
-| **Codex CLI** (OpenAI) | ✅ Full support |
-| **Cursor** | ✅ Full support |
-| **Windsurf** | ✅ Full support |
-| **Aider** | ✅ Full support |
-| **Cline** | ✅ Full support |
-| **Continue** | ✅ Full support |
-| **Roo Code** | ✅ Full support |
-| **Gemini CLI** (Google) | ✅ Supported |
-| **Copilot CLI** (GitHub) | ✅ Supported |
-| **Augment** | ✅ Supported |
-| **Any Agent Skills–compatible agent** | ✅ Should work |
+| **Claude Code** (Anthropic) |  Full support |
+| **Codex CLI** (OpenAI) |  Full support |
+| **Cursor** |  Full support |
+| **Windsurf** |  Full support |
+| **Aider** |  Full support |
+| **Cline** |  Full support |
+| **Continue** |  Full support |
+| **Roo Code** |  Full support |
+| **Gemini CLI** (Google) |  Supported |
+| **Copilot CLI** (GitHub) |  Supported |
+| **Augment** |  Supported |
+| **Any Agent Skillscompatible agent** |  Should work |
 
 ---
 
-## 📸 Demo
+##  Demo
 
 ```
-> Coming soon — terminal recording showing deep-mind blocking a hallucinated
+> Coming soon  terminal recording showing deep-mind blocking a hallucinated
   API call and demanding evidence before generating code.
 ```
 
 ---
 
-## 👨‍💻 Contributing
+##  Contributing
 
 Contributions are welcome. A few ground rules:
 
-1. **No fluff** — every line must add signal. Readability > cleverness.
-2. **No sycophancy** — reviews must be honest, not nice.
-3. **Test it** — run the skill against a real agent before submitting a PR.
-4. **Keep it agent-agnostic** — avoid agent-specific hacks.
+1. **No fluff**  every line must add signal. Readability > cleverness.
+2. **No sycophancy**  reviews must be honest, not nice.
+3. **Test it**  run the skill against a real agent before submitting a PR.
+4. **Keep it agent-agnostic**  avoid agent-specific hacks.
 
 **PR process:**
 
@@ -200,18 +200,19 @@ Contributions are welcome. A few ground rules:
 
 ---
 
-## 📄 License
+##  License
 
-MIT © 2026 [Valentino Saputra](https://github.com/vtino17)
+MIT  2026 [Valentino Saputra](https://github.com/vtino17)
 
 ---
 
-## 👤 Author
+##  Author
 
-**Valentino Saputra** — _vtino17_  
-📍 Sungailiat, Bangka Belitung, Indonesia  
-🔗 [GitHub](https://github.com/vtino17)  
+**Valentino Saputra**  _vtino17_  
+ Sungailiat, Bangka Belitung, Indonesia  
+ [GitHub](https://github.com/vtino17)  
 
-> _Network Engineering · Cybersecurity · AI · IoT_  
+> _Network Engineering  Cybersecurity  AI  IoT_  
 > _Bikin AI agent jadi mikir dulu sebelum ngomong._  
 > _(Making AI agents think before they speak.)_
+
