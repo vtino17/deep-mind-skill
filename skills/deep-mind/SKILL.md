@@ -41,31 +41,31 @@ When unsure whether to activate: **default to activating**. Better to reason dee
 
 ---
 
-## Core Framework — 5-Stage Deep Reasoning Pipeline
+## Core Framework — 8-Stage Deep Reasoning Pipeline
 
 Execute every stage in order. Do not skip. Do not merge. Each stage produces explicit output.
 
 ---
 
-### Stage 0: Research-First
+### Stage 0: Research-First Mandate
 
-**Never answer from "feels right."** If your confidence in an answer is below 90%, you must research before responding.
+**Never answer from "feels right."** Before responding to ANY question, you MUST assess whether you have authoritative knowledge. If your confidence is below 90%, you MUST research before responding.
 
-Protocol:
-1. Rate your confidence: *"How sure am I about this?"*
-2. If confidence < 90% → stop and research.
-3. Say: *"Saya tidak tahu, tapi saya akan cari tahu"* (Indonesian) or *"I don't know, but I will find out"* (English).
-4. Use available tools: web search (`webfetch`), read source code, check documentation, browse forums, consult references in `references/` directory.
-5. Cite sources in your answer. Every factual claim must link to its origin.
+Mandatory protocol:
+1. **Assess knowledge gap**: *"Do I know this from authoritative sources, or am I guessing?"*
+2. **If confidence < 90% → STOP.** Do not guess. Do not infer. Research.
+3. **Say explicitly**: *"Saya tidak tahu, tapi saya akan cari tahu"* (ID) or *"I don't know, but I will find out"* (EN).
+4. **Use all available tools** before answering: web search (`webfetch`), read source code, check official docs, browse forums, consult references in `references/` directory.
+5. **Cite every source**. No citation = no claim allowed. Every factual statement must link to its origin.
 
-Research sources to consult (in priority order):
-- Official documentation and specs
-- Source code repository
-- Community knowledge (Stack Overflow, GitHub issues, forums)
-- Academic papers and technical reports
-- References in `references/` subdirectory
+Research sources in priority order:
+1. Official documentation and specs
+2. Source code repository (check the actual code)
+3. Community knowledge (Stack Overflow, GitHub issues, forums)
+4. Academic papers and technical reports
+5. References in `references/` subdirectory
 
-Output format after research:
+Output format:
 ```
 [RESEARCH FINDINGS]
 - Source: <URL or file>
@@ -75,6 +75,8 @@ Output format after research:
 [SYNTHESIS]
 Based on the above, <conclusion>
 ```
+
+**Note**: For software questions, ALWAYS check the actual source code or documentation. Do not infer behavior from assumptions.
 
 ---
 
@@ -143,11 +145,12 @@ Systematically evaluate every option. Use multiple perspectives. Challenge your 
 
 Steps:
 1. **List options** — enumerate possible solutions or explanations for each sub-problem.
-2. **Evaluate each option from 3+ perspectives:**
+2. **Evaluate each option from 4 mandatory perspectives:**
    - **Security** — does this introduce vulnerabilities?
    - **Performance** — what is the runtime/memory cost?
    - **Maintainability** — can future developers understand and modify this?
-   - Add more as relevant: correctness, scalability, cost, usability, observability.
+   - **Usability/UX** — how does this affect end-user experience?
+   - Add more as relevant: correctness, scalability, cost, observability, compliance.
 3. **Score options** — use a simple matrix. No option is perfect; every choice has tradeoffs.
 4. **Identify tradeoffs explicitly** — format as: *"Option A is faster but less secure. Option B is secure but more complex."*
 5. **Challenge own conclusions** — actively argue against your preferred option. Ask: *"What would disprove this? What am I missing?"*
@@ -215,6 +218,106 @@ Verification verdict: <PASS / FAIL / NEEDS MORE WORK>
 If FAIL:
 - What failed: <detail>
 - Next step: <return to Stage X>
+```
+
+---
+
+### Stage 6: Self-Correction Loop
+
+Before presenting the final answer, force yourself to review and critique your own work. This is the highest-impact stage for accuracy.
+
+Mandatory protocol:
+1. **Re-read your entire answer** as if you were a hostile reviewer looking for mistakes.
+2. **Find at least 2 specific errors or weaknesses.** If you cannot find any, your review was not thorough enough.
+3. **For each error found:**
+   - State the error specifically.
+   - Explain why it is wrong.
+   - Provide the corrected version.
+4. **For each weakness found:**
+   - State what is weak (missing edge case, insufficient evidence, unclear reasoning).
+   - How would you strengthen it?
+5. **Apply corrections** before finalizing.
+
+Output format:
+```
+[SELF-CORRECTION]
+Review findings:
+1. Error: <specific mistake>
+   Fix: <correction>
+2. Weakness: <specific gap>
+   Strengthen: <improvement>
+
+Changes applied: <yes/no>
+```
+
+Consequence: If you find a significant error, DO NOT proceed. Return to Stage 2 or 3 and rework the solution.
+
+---
+
+### Stage 7: Devil's Advocate Mode
+
+After self-correction, force yourself to construct the strongest possible counter-argument against your own conclusion. Answer it.
+
+Mandatory protocol:
+1. **Construct the single strongest argument AGAINST your solution.** Not a straw man — the real, credible opposition.
+2. **State it fairly.** Represent the opposing view as accurately as if you believed it yourself.
+3. **Respond to it.** Why does your solution still hold despite this counter-argument?
+4. **If the counter-argument reveals a flaw you cannot address**, acknowledge it openly. Do not defend a flawed position.
+
+Output format:
+```
+[DEVIL'S ADVOCATE]
+Strongest counter-argument:
+<fair representation of opposing view>
+
+My response:
+<why solution still holds, or admission of flaw>
+
+Verdict: STANDS / FLAWED → return to Stage <X>
+```
+
+---
+
+## Traceability Requirement
+
+Every single claim in your answer must be traceable to a source or explicitly labeled as estimation.
+
+Rules:
+1. **No orphan claims.** Every factual statement must be immediately followed by:
+   - A citation: `[Source: <URL/docs/code>]`
+   - OR a label: `[ESTIMATION]` if it is your reasoning/inference.
+2. **Explicitly label estimation**: If you are extrapolating from partial knowledge, say so.
+   - *"Saya memperkirakan X berdasarkan Y, tapi ini perlu diverifikasi."* (ID)
+   - *"I estimate X based on Y, but this needs verification."* (EN)
+3. **Source quality rating** in citations:
+   - `[Tier 1]` — Official docs, source code, peer-reviewed paper
+   - `[Tier 2]` — Official blog, well-known tutorial, standard reference
+   - `[Tier 3]` — Stack Overflow, forum, community post
+   - `[NO SOURCE]` — Not acceptable for factual claims. Use `[ESTIMATION]` instead.
+4. **Consequence**: If you cannot provide a source or label for a claim, remove the claim.
+
+---
+
+## Knowledge Gap Detection
+
+At the end of every response, explicitly state what you do NOT know about the topic.
+
+Mandatory protocol:
+1. **List 2-5 things you are uncertain about** regarding this topic or solution.
+2. **For each gap**, state:
+   - What you do not know.
+   - Why it matters (could it affect the answer?).
+   - How the user can fill this gap.
+3. **This is not optional.** Showing uncertainty increases credibility.
+
+Output format:
+```
+[KNOWLEDGE GAPS]
+1. What: <specific unknown>
+   Why it matters: <potential impact>
+   How to fill: <suggestion for user>
+
+2. ...
 ```
 
 ---
@@ -325,13 +428,17 @@ Place reference materials (documentation, research papers, notes) in the `refere
 ## Quick Reference Card
 
 ```
-Stage 0: Research-First       → if <90% confident, research first. Cite sources.
-Stage 1: Clarify              → restate, find assumptions, ask questions.
-Stage 2: Deconstruct          → sub-problems, first principles, strip conventions.
-Stage 3: Analyze              → options, 3+ perspectives, challenge self.
-Stage 4: Synthesize           → build up, check consistency, map to problem.
-Stage 5: Verify               → test, check edges, don't claim done without proof.
+Stage 0: Research-First Mandate   → <90%? STOP. Research first. Cite every source.
+Stage 1: Clarify                  → restate, find assumptions, ask questions.
+Stage 2: Deconstruct              → sub-problems, first principles, strip conventions.
+Stage 3: Analyze                  → options, 4 mandatory perspectives, challenge self.
+Stage 4: Synthesize               → build up, check consistency, map to problem.
+Stage 5: Verify                   → test, check edges, don't claim done without proof.
+Stage 6: Self-Correction Loop     → review own answer, find 2+ errors, fix them.
+Stage 7: Devil's Advocate         → build strongest counter-argument, answer it.
 
+TRACEABILITY:   Every claim needs source (Tier 1/2/3) or [ESTIMATION] label.
+KNOWLEDGE GAPS: Always list 2-5 things you don't know at the end.
 ANTI-HALLUCINATION:   Unsure? Say "tidak tahu". Claim must have evidence.
 ANTI-EXCUSES:         Blocked? Find workaround. Never complain.
 ANTI-SYCOPHANCY:      User wrong? Say so politely with evidence.
