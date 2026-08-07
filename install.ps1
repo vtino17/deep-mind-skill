@@ -8,6 +8,7 @@
 $ErrorActionPreference = "Stop"
 $ScriptDir = Split-Path -Parent $MyInvocation.MyCommand.Path
 $SkillSrc = Join-Path $ScriptDir ".claude\skills\deep-mind"
+$ForceInstall = $args -contains "--force"
 
 function Write-Banner {
     Clear-Host
@@ -74,6 +75,12 @@ function Install-Skill {
     param($Agent)
     $targetPath = $Agent.Path
     $skillPath = Join-Path $targetPath "deep-mind"
+    $markerPath = Join-Path $skillPath ".deep-mind-managed"
+
+    if ((Test-Path $skillPath) -and -not (Test-Path $markerPath) -and -not $ForceInstall) {
+        Write-Warning "Skipping $($Agent.Name): $skillPath is not managed by this installer. Use --force to replace it."
+        return $false
+    }
     
     New-Item -ItemType Directory -Path "$skillPath\references" -Force | Out-Null
     
@@ -81,16 +88,21 @@ function Install-Skill {
     if (Test-Path "$SkillSrc\references") {
         Copy-Item -Path "$SkillSrc\references\*" -Destination "$skillPath\references\" -Force -Recurse
     }
+    Set-Content -Path $markerPath -Value "managed-by=deep-mind-installer" -Encoding utf8
     
     Write-Host "  [OK] $($Agent.Name) -> $skillPath" -ForegroundColor Green
+    return $true
 }
 
 function Uninstall-Skill {
     param($Agent)
     $skillPath = Join-Path $Agent.Path "deep-mind"
-    if (Test-Path $skillPath) {
+    $markerPath = Join-Path $skillPath ".deep-mind-managed"
+    if ((Test-Path $skillPath) -and (Test-Path $markerPath)) {
         Remove-Item -Path $skillPath -Recurse -Force
         Write-Host "  [Removed] $($Agent.Name)" -ForegroundColor Green
+    } elseif (Test-Path $skillPath) {
+        Write-Warning "Skipping $($Agent.Name): refusing to remove an unmanaged directory."
     }
 }
 
@@ -100,14 +112,14 @@ Write-Banner
 
 $agents = Get-Agents
 
-if ($args[0] -eq "--uninstall") {
+if ($args -contains "--uninstall") {
     Write-Host "Uninstalling deep-mind from all agents..." -ForegroundColor Yellow
     foreach ($agent in $agents) { Uninstall-Skill $agent }
     Write-Host "Done!" -ForegroundColor Green
     exit 0
 }
 
-if ($args[0] -eq "--dry-run") {
+if ($args -contains "--dry-run") {
     Write-Host "Preview: Will install skill to:" -ForegroundColor Yellow
     foreach ($agent in $agents) { Write-Host "  - $($agent.Name) ($($agent.Path))" }
     exit 0
@@ -157,8 +169,7 @@ Write-Host ""
 Write-Host "Installing deep-mind skill..." -ForegroundColor Yellow
 $count = 0
 foreach ($agent in $selected) {
-    Install-Skill $agent
-    $count++
+    if (Install-Skill $agent) { $count++ }
 }
 
 Write-Host ""

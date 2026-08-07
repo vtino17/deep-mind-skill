@@ -1,6 +1,6 @@
 ---
-description: Deep critical thinking with 5-stage reasoning pipeline
+description: Deep critical thinking with the 8-stage reasoning pipeline
 ---
-Load deep-mind skill. Apply 5-stage reasoning to: $ARGUMENTS
+Load the deep-mind skill. Apply its 8-stage reasoning pipeline to: $ARGUMENTS
 
 VERIFY facts. GROUND claims in sources. REASON step-by-step. CHALLENGE with counter-evidence. DECIDE only what survives.
