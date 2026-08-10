@@ -2,7 +2,7 @@
 
 [![Stars](https://img.shields.io/github/stars/vtino17/deep-mind-skill?style=flat-square&label=Stars&color=ffd700)](https://github.com/vtino17/deep-mind-skill/stargazers)
 [![License](https://img.shields.io/badge/License-MIT-blue?style=flat-square)](LICENSE)
-[![Agents](https://img.shields.io/badge/agents-12%2B-brightgreen?style=flat-square)]()
+[![Agents](https://img.shields.io/badge/packaging-multi--agent-brightgreen?style=flat-square)]()
 [![Install](https://img.shields.io/badge/install-npx%20skills-8A2BE2?style=flat-square)]()
 [![OpenCode](https://img.shields.io/badge/OpenCode-plugin-purple?style=flat-square)]()
 
@@ -25,7 +25,7 @@ For Claude Code:
 Once installed, just include any of these in your prompt:
 
 **Commands:**
-- `/think-deeper <question>` — Full 5-stage reasoning
+- `/think-deeper <question>` — Full 8-stage reasoning
 - `/critical <claim>` — Adversarial review
 - `/verify <statement>` — Evidence gate
 - `/deep-dive <problem>` — Root cause analysis
@@ -42,7 +42,7 @@ Once installed, just include any of these in your prompt:
 User: /think-deeper why is port 443 open on 10.0.0.1?
 
 Agent:
-[DEEP-MIND] Applying 5-stage reasoning...
+[DEEP-MIND] Applying the reasoning pipeline...
 
 1. VERIFY — Port 443 open means HTTPS service running
 2. GROUND — Nmap scan result: 443/tcp open https
@@ -53,7 +53,7 @@ Agent:
 
 ## Features
 
-- 5-Stage Reasoning: VERIFY, GROUND, REASON, CHALLENGE, DECIDE
+- 8-Stage Reasoning: research, clarify, deconstruct, analyze, synthesize, verify, self-correct, challenge
 - Anti-Hallucination: Blocks fabricated code and imaginary APIs
 - Evidence Gate: Every claim must cite real sources
 - Anti-Sycophancy: Rejects user flattery, tells the truth
@@ -63,30 +63,32 @@ Agent:
 
 ## How It Works
 
-Every time your agent receives a task, deep-mind intercepts and runs it through five stages:
+When the skill is selected, it applies eight stages:
 
 ```
-1. VERIFY     Check the request against known facts
-2. GROUND     Anchor every claim to concrete sources
-3. REASON     Step-by-step logical deduction
-4. CHALLENGE  Stress-test with counter-evidence
-5. DECIDE     Output only what survives all gates
+0. RESEARCH      Verify uncertain and time-sensitive facts
+1. CLARIFY       Bound the request and expose assumptions
+2. DECONSTRUCT   Split the problem into testable parts
+3. ANALYZE       Compare evidence, risks, and alternatives
+4. SYNTHESIZE    Build a coherent answer from verified parts
+5. VERIFY        Test claims, outputs, and edge cases
+6. SELF-CORRECT  Review and repair material weaknesses
+7. CHALLENGE     Apply the strongest credible counterargument
 ```
 
 If any stage fails, the agent reports the gap instead of guessing.
 
 ## Supported AI Agents
 
-| Agent | Status | Commands |
-|-------|--------|----------|
-| Claude Code | Full | /think-deeper, /critical, /verify |
-| Codex CLI | Full | @deep-mind |
-| Cursor | Full | /think-deeper |
-| OpenCode | Full | /think-deeper, /critical, /verify |
-| Windsurf | Full | Manual skill reference |
-| Gemini CLI | Full | Manual skill reference |
-| Copilot CLI | Supported | AGENTS.md reference |
-| Cline, Continue, Aider, Roo Code | Supported | Manual skill reference |
+| Agent | Distribution included | Invocation |
+|-------|-----------------------|------------|
+| Claude Code | Yes | Skill or slash commands |
+| Cursor | Yes | Skill reference |
+| OpenCode | Yes | Plugin commands and skill reference |
+| Codex CLI | Generic skill copy | Skill reference |
+| Windsurf, Copilot CLI, Cline, Continue, Aider, Roo Code | Installer target | Manual skill reference; verify against the installed agent version |
+
+Packaging support does not guarantee identical runtime behavior across agents.
 
 ## Repositories
 

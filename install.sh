@@ -8,6 +8,10 @@ set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 SKILL_SRC="$SCRIPT_DIR/.claude/skills/deep-mind"
+FORCE=false
+for argument in "$@"; do
+  [[ "$argument" == "--force" ]] && FORCE=true
+done
 
 # ── Colors ──
 RED='\033[0;31m'; GREEN='\033[0;32m'; YELLOW='\033[1;33m'
@@ -30,7 +34,7 @@ mapfile -t AGENTS < <(detect_agents 2>/dev/null || true)
 
 print_menu() {
   echo ""
-  echo -e "${YELLOW}Pilih AI Agent untuk dipasang skill ini:${NC}"
+  echo -e "${YELLOW}Select the AI agents that should receive this skill:${NC}"
   echo ""
   for i in "${!AGENTS[@]}"; do
     local name="${AGENTS[$i]#*:}"
@@ -60,13 +64,21 @@ install_skill() {
     *)        install_path="$target_dir/skills" ;;
   esac
 
-  mkdir -p "$install_path/deep-mind/references"
+  local skill_dir="$install_path/deep-mind"
+  local marker="$skill_dir/.deep-mind-managed"
+  if [[ -e "$skill_dir" && ! -f "$marker" && "$FORCE" != true ]]; then
+    echo -e "  ${YELLOW}SKIP${NC} $agent_name: $skill_dir is not managed by this installer (use --force to replace it)" >&2
+    return 1
+  fi
+
+  mkdir -p "$skill_dir/references"
   
   # Copy files
-  cp "$SKILL_SRC/SKILL.md" "$install_path/deep-mind/"
-  cp -r "$SKILL_SRC/references/"* "$install_path/deep-mind/references/" 2>/dev/null || true
+  cp "$SKILL_SRC/SKILL.md" "$skill_dir/"
+  cp -r "$SKILL_SRC/references/"* "$skill_dir/references/" 2>/dev/null || true
+  printf '%s\n' "managed-by=deep-mind-installer" > "$marker"
   
-  echo -e "  ${GREEN}✅${NC} $agent_name → $install_path/deep-mind/"
+  echo -e "  ${GREEN}OK${NC} $agent_name -> $skill_dir/"
 }
 
 # ── Uninstall ──
@@ -88,27 +100,44 @@ uninstall_skill() {
     *)        install_path="$target_dir/skills" ;;
   esac
 
-  if [ -d "$install_path/deep-mind" ]; then
-    rm -rf "$install_path/deep-mind"
-    echo -e "  ${GREEN}🗑️${NC} Removed from $agent_name"
+  local skill_dir="$install_path/deep-mind"
+  if [[ -d "$skill_dir" && -f "$skill_dir/.deep-mind-managed" ]]; then
+    rm -rf -- "$skill_dir"
+    echo -e "  ${GREEN}Removed${NC} from $agent_name"
+  elif [[ -d "$skill_dir" ]]; then
+    echo -e "  ${YELLOW}SKIP${NC} $agent_name: refusing to remove an unmanaged directory" >&2
+    return 1
   fi
 }
+
+has_arg() {
+  local expected="$1" argument
+  shift
+  for argument in "$@"; do
+    [[ "$argument" == "$expected" ]] && return 0
+  done
+  return 1
+}
+
+if [[ "${DEEP_MIND_LIB_ONLY:-0}" == "1" ]]; then
+  return 0 2>/dev/null || exit 0
+fi
 
 # ── Main ──
 banner
 
-if [ "${1:-}" = "--uninstall" ]; then
-  echo -e "${YELLOW}🗑️  Uninstalling deep-mind from all agents...${NC}"
+if has_arg --uninstall "$@"; then
+  echo -e "${YELLOW}Uninstalling installer-managed deep-mind copies...${NC}"
   for agent in "${AGENTS[@]}"; do
     IFS=: read -r key name target_dir _ <<< "$agent"
     uninstall_skill "$key" "$name" "$target_dir"
   done
-  echo -e "${GREEN}✔️  Uninstall selesai!${NC}"
+  echo -e "${GREEN}Uninstall complete.${NC}"
   exit 0
 fi
 
-if [ "${1:-}" = "--dry-run" ]; then
-  echo -e "${YELLOW}🔍 Preview: Akan install skill ke agent berikut:${NC}"
+if has_arg --dry-run "$@"; then
+  echo -e "${YELLOW}Preview: the skill would be installed for:${NC}"
   for agent in "${AGENTS[@]}"; do
     IFS=: read -r key name target_dir _ <<< "$agent"
     echo "  • $name ($target_dir)"
@@ -117,14 +146,14 @@ if [ "${1:-}" = "--dry-run" ]; then
 fi
 
 if [ ${#AGENTS[@]} -eq 0 ]; then
-  echo -e "${RED}❌  Tidak ada AI coding agent terdeteksi di sistem ini.${NC}"
+  echo -e "${RED}No AI coding agent was detected on this system.${NC}"
   echo ""
-  echo "Pastikan minimal satu agent terinstall:"
+  echo "Install at least one supported agent first:"
   echo "  Claude Code, Cursor, Windsurf, Copilot CLI, Codex, dll."
   exit 1
 fi
 
-echo -e "${GREEN}🔍 Agent terdeteksi:${NC}"
+echo -e "${GREEN}Detected agents:${NC}"
 for agent in "${AGENTS[@]}"; do
   IFS=: read -r key name target_dir _ <<< "$agent"
   echo "  ✅ $name"
@@ -136,12 +165,12 @@ for i in "${!AGENTS[@]}"; do selected[$i]=" "; done
 
 if [ ${#AGENTS[@]} -eq 1 ]; then
   echo ""
-  echo -e "${CYAN}→ Hanya 1 agent terdeteksi. Install otomatis.${NC}"
+  echo -e "${CYAN}One agent detected; selecting it automatically.${NC}"
   selected[0]="x"
 else
   while true; do
     print_menu
-    echo -n "Masukkan nomor (pisah spasi/koma, atau 'all'): "
+    echo -n "Enter numbers (space/comma separated) or 'all': "
     IFS= read -r input
     input=$(echo "$input" | tr ',' ' ')
     
@@ -157,29 +186,39 @@ else
     for num in $input; do
       if [[ "$num" =~ ^[0-9]+$ ]] && [ "$num" -ge 1 ] && [ "$num" -le "${#AGENTS[@]}" ]; then
         selected[$((num-1))]="x"
+      else
+        valid=false
       fi
     done
-    
+    if [[ "$valid" != true ]]; then
+      echo -e "${RED}Invalid selection. Try again.${NC}" >&2
+      continue
+    fi
+    if [[ ! " ${selected[*]} " =~ " x " ]]; then
+      echo -e "${RED}Select at least one agent.${NC}" >&2
+      continue
+    fi
     break
   done
 fi
 
 # Install
 echo ""
-echo -e "${YELLOW}📦  Menginstall deep-mind skill...${NC}"
+echo -e "${YELLOW}Installing deep-mind skill...${NC}"
 installed=0
 for i in "${!AGENTS[@]}"; do
   if [ "${selected[$i]}" = "x" ]; then
     IFS=: read -r key name target_dir _ <<< "${AGENTS[$i]}"
-    install_skill "$key" "$name" "$target_dir"
-    installed=$((installed + 1))
+    if install_skill "$key" "$name" "$target_dir"; then
+      installed=$((installed + 1))
+    fi
   fi
 done
 
 echo ""
-echo -e "${GREEN}✔️  Selesai! deep-mind terinstall di $installed agent(s).${NC}"
+echo -e "${GREEN}Complete: deep-mind installed for $installed agent(s).${NC}"
 echo ""
-echo "📖  Cara pakai: cukup mulai prompt dengan trigger phrase seperti:"
+echo "Usage: start a prompt with a trigger phrase such as:"
 echo "    \"think deeper: ...\", \"critical analysis: ...\", \"first principles: ...\""
 echo ""
 echo "🗑️  Uninstall: bash install.sh --uninstall"

@@ -1,24 +1,11 @@
 ---
 name: deep-mind
-description: Force critical thinking, deep reasoning, and intellectual integrity. Activates when agent needs to analyze deeply, verify claims, or research unknown territory.
-trigger: >
-  Commands like "/think-deeper", "/critical", "/deep-dive", "/verify", "/research",
-  "/first-principles", "/root-cause", "/reason", "/analisa",
-  and natural phrases like "think deeper", "critical analysis", "reason about", "first principles",
-  "deep dive", "analisa mendalam", "pikir kritis", "root cause", "verify", "research this",
-  "cari tahu", "deep reasoning", "apakah benar", "prove it", "tracing through",
-  "break this down", "investigate"
-models: ["claude-sonnet-4-20250514", "claude-sonnet-4.5-20250514", "claude-opus-4-20250514", "gemini-2.5-pro", "gpt-4o"]
-config:
-  auto-activate: true
-  priority: high
-  tone: direct, analytical, honest, humble
-  locale: id-ID, en-US
+description: Apply evidence-backed critical reasoning, verification, first-principles analysis, root-cause investigation, and adversarial review. Use when a request asks to think deeper, verify a claim, research uncertain facts, compare consequential options, investigate a failure, or challenge an assumption.
 ---
 
 # Deep Mind — Critical Reasoning & Intellectual Integrity
 
-This skill transforms an AI agent into a rigorous critical thinker. It enforces a structured 5-stage reasoning pipeline, blocks three categories of harmful behavior, and demands evidence-backed output.
+Apply a structured 8-stage reasoning pipeline, block three categories of harmful behavior, and require evidence-backed output.
 
 ---
 
@@ -28,12 +15,12 @@ Activate this skill when the user's request matches any of these patterns:
 
 | Trigger | Example |
 |---|---|
-| Deep analysis | "think deeper about this approach", "analisa mendalam" |
-| Critical reasoning | "reason about tradeoffs", "pikir kritis" |
+| Deep analysis | "think deeper about this approach" |
+| Critical reasoning | "reason about the tradeoffs" |
 | First principles | "break this down from first principles" |
 | Root cause | "find root cause of this bug" |
-| Verification | "verify this conclusion", "prove it", "apakah benar" |
-| Research | "research this topic", "cari tahu tentang..." |
+| Verification | "verify this conclusion", "prove it" |
+| Research | "research this topic" |
 | Investigation | "tracing through the code flow" |
 | Doubt | "I'm not sure this is right, check it" |
 
@@ -54,7 +41,7 @@ Execute every stage in order. Do not skip. Do not merge. Each stage produces exp
 Mandatory protocol:
 1. **Assess knowledge gap**: *"Do I know this from authoritative sources, or am I guessing?"*
 2. **If confidence < 90% → STOP.** Do not guess. Do not infer. Research.
-3. **Say explicitly**: *"Saya tidak tahu, tapi saya akan cari tahu"* (ID) or *"I don't know, but I will find out"* (EN).
+3. **Say explicitly**: *"I don't know yet, but I will verify it."*
 4. **Use all available tools** before answering: web search (`webfetch`), read source code, check official docs, browse forums, consult references in `references/` directory.
 5. **Cite every source**. No citation = no claim allowed. Every factual statement must link to its origin.
 
@@ -328,12 +315,12 @@ These three anti-patterns must be actively suppressed. If you catch yourself doi
 
 ---
 
-### 1. No Hallucination (Anti-Bohong)
+### 1. No Hallucination
 
 **Never generate information you cannot verify.**
 
 Rules:
-- If you are unsure → say *"Saya tidak tahu"* (Indonesian) or *"I don't know"* (English).
+- If you are unsure, say *"I don't know"* and identify how to verify it.
 - Never generate fake code, fake file paths, fake command output, or fake API responses.
 - Every claim must have evidence. Before stating something, ask yourself: *"Can I cite a source for this?"*
 - Before answering: *"Is this fact or assumption?"* Label it clearly.
@@ -350,7 +337,7 @@ Consequence of violation: If you produce unverified content, the reasoning pipel
 
 ---
 
-### 2. No Excuses (Anti-Ngeluh)
+### 2. No Excuses
 
 **Never complain about difficulty. Never refuse without alternatives.**
 
@@ -412,7 +399,7 @@ Sources consulted:
 
 5. **Code blocks** — use appropriate language tags. Keep code clean and explained.
 
-6. **Indonesian or English** — respond in the language the user uses. Mixing is acceptable if natural.
+6. **International English by default** — use another language only when the user explicitly requests it.
 
 ---
 
