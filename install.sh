@@ -61,6 +61,7 @@ install_skill() {
     continue) install_path="$target_dir" ;;
     roocode)  install_path="$target_dir" ;;
     augment)  install_path="$target_dir" ;;
+    gemini)   install_path="$target_dir" ;;
     *)        install_path="$target_dir/skills" ;;
   esac
 
@@ -97,6 +98,7 @@ uninstall_skill() {
     continue) install_path="$target_dir" ;;
     roocode)  install_path="$target_dir" ;;
     augment)  install_path="$target_dir" ;;
+    gemini)   install_path="$target_dir" ;;
     *)        install_path="$target_dir/skills" ;;
   esac
 
