@@ -86,6 +86,7 @@ If any stage fails, the agent reports the gap instead of guessing.
 | Cursor | Yes | Skill reference |
 | OpenCode | Yes | Plugin commands and skill reference |
 | Codex CLI | Generic skill copy | Skill reference |
+| Gemini CLI | Installer target | Skill reference |
 | Windsurf, Copilot CLI, Cline, Continue, Aider, Roo Code | Installer target | Manual skill reference; verify against the installed agent version |
 
 Packaging support does not guarantee identical runtime behavior across agents.
