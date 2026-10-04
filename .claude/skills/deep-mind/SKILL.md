@@ -23,6 +23,7 @@ Activate this skill when the user's request matches any of these patterns:
 | Research | "research this topic" |
 | Investigation | "tracing through the code flow" |
 | Doubt | "I'm not sure this is right, check it" |
+| Gemini CLI | `/think-deeper`, `/critical`, `/verify` via Gemini CLI plugin path |
 
 When unsure whether to activate: **default to activating**. Better to reason deeply than to answer shallowly.
 
