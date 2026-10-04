@@ -65,6 +65,10 @@ function Get-Agents {
         $agents += [PSCustomObject]@{ Key="augment"; Name="Augment"; Path="$userHome\.augment\skills"; Detected=$true }
     }
 
+    if (Get-Command gemini -ErrorAction SilentlyContinue) {
+        $agents += [PSCustomObject]@{ Key="gemini"; Name="Gemini CLI"; Path="$userHome\.gemini\skills"; Detected=$true }
+    }
+
     $ocPath = if (Test-Path "$userHome\.config\opencode") { "$userHome\.config\opencode" } elseif (Test-Path "$userHome\.opencode") { "$userHome\.opencode" } else { $null }
     if ($ocPath) { $agents += [PSCustomObject]@{ Key="opencode"; Name="OpenCode"; Path="$ocPath\skills"; Detected=$true } }
 
