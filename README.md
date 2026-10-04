@@ -92,8 +92,8 @@ Packaging support does not guarantee identical runtime behavior across agents.
 
 ## Repositories
 
-| Repo | Stars | Description |
-|------|-------|-------------|
+| Repo | Description |
+|------|-------------|
 | [kage](https://github.com/vtino17/kage) | AI-powered security scanner |
 | [tools](https://github.com/vtino17/tools) | 85+ penetration testing tools |
 | [taskcapsule](https://github.com/vtino17/taskcapsule) | Task context manager |
