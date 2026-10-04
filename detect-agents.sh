@@ -64,6 +64,11 @@ detect_agents() {
     agents+=("augment:Augment:$HOME/.augment/skills:$HOME/.augment")
   fi
 
+  # Gemini CLI
+  if command -v gemini &>/dev/null || [ -d "$HOME/.gemini" ]; then
+    agents+=("gemini:Gemini CLI:$HOME/.gemini/skills:$HOME/.gemini")
+  fi
+
   # OpenCode
   if [ -d "$HOME/.config/opencode" ] || [ -d "$HOME/.opencode" ]; then
     local oc_dir="$HOME/.config/opencode"
